@@ -5,7 +5,8 @@ class LDR {
         int pin;
 
     public:
-        int Ldr(int pin){
+        LDR(int pin){
+            this->pin = pin;
             init();
         }
 
@@ -13,8 +14,9 @@ class LDR {
         pinMode(pin, INPUT);
     }
     
-    void read(){
-        analogRead(pin);
+    int read(){
+        int result = analogRead(pin);
+        return result;
     }
 };
 

@@ -5,20 +5,18 @@
 
 // Variables
 LED led1(22);
-int ldrPin = 13;
+LDR ldr1(13);
 
 void setup() {
   Serial.begin(115200);
-  pinMode(ldrPin, INPUT);
 }
 
 void loop() {
   
-  int ldrStatus = analogRead(ldrPin);
-  Serial.println(ldrStatus);
+  Serial.println(ldr1.read());
   delay(200);
 
-  if (ldrStatus >= 100) {
+  if (ldr1.read() >= 100) {
     led1.on();
   } else{
     led1.off();
