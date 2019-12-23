@@ -1,11 +1,15 @@
 # include <Arduino.h>
 
-class LDR {
+// 220ohm resistor used
+
+const int LED_ON_THRESHOLD = 100;
+
+class Ldr {
     private:
         int pin;
 
     public:
-        LDR(int pin){
+        Ldr(int pin){
             this->pin = pin;
             init();
         }
@@ -18,6 +22,17 @@ class LDR {
         int result = analogRead(pin);
         return result;
     }
+
+    int ledIsOn(){
+        if (read() >= (LED_ON_THRESHOLD)){
+            return true;
+        } 
+        else {
+            return false;
+        }
+
+    }
+
 };
 
 
