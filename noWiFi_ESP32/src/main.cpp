@@ -1,14 +1,14 @@
 # include <Arduino.h>
 # include <ldr.h>
+# include <led.h>
+
 
 // Variables
-const int ledPin = 22;
-const int ldrPin = 13;
-
+LED led1(22);
+int ldrPin = 13;
 
 void setup() {
   Serial.begin(115200);
-  pinMode(ledPin, OUTPUT);
   pinMode(ldrPin, INPUT);
 }
 
@@ -19,8 +19,8 @@ void loop() {
   delay(200);
 
   if (ldrStatus >= 100) {
-    digitalWrite(ledPin, HIGH);
+    led1.on();
   } else{
-    digitalWrite(ledPin, LOW);
+    led1.off();
   }
 }
