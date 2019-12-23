@@ -1,50 +1,47 @@
 #include <Arduino.h>
-// Setup the server to receive data over WiFi
+
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-// Configuration parameters for Access Point
-char * ssid_ap = "ESP8266";
-char * password_ap = "macbook1";
-IPAddress ip(192,168,11,4); // arbitrary IP address (doesn't conflict w/ local network)
-IPAddress gateway(192,168,11,1);
-IPAddress subnet(255,255,255,0);
+const char *ssid = "ESP8266_WDI";
+const char *password = "macbook1";
 
-// Set up the server object
-ESP8266WebServer server;
+ESP8266WebServer server(80);
 
-// Keep track of the sensor data that's going to be sent by the client
-float sensor_value = 0.0;
+void handleSentVar() {
+  Serial.println("handleSentVar function called...");
+  if (server.hasArg("sensor_reading")) { // this is the variable sent from the client
+    Serial.println("Sensor reading received...");
 
+    int readingInt = server.arg("sensor_reading").toInt();
+    char readingToPrint[5];
+    itoa(readingInt, readingToPrint, 10); //integer to string conversion for OLED library
 
-// Methods
-
-void handleIndex() {
-  server.send(200,"text/plain",String(sensor_value)); // we'll need to refresh the page for getting the latest value
-}
-
-void handleUpdate() {
-  // The value will be passed as a URL argument
-  sensor_value = server.arg("value").toFloat();
-  Serial.println(sensor_value);
-  server.send(200,"text/plain","Updated");
+    Serial.print("Reading: ");
+    Serial.println(readingToPrint);
+    Serial.println();
+    server.send(200, "text/html", "Data received");
+  }
 }
 
 void setup() {
-  WiFi.mode(WIFI_AP);
-  WiFi.softAPConfig(ip,gateway,subnet);
-  WiFi.softAP(ssid_ap,password_ap);
-  // Print IP Address as a sanity check
+  delay(1000);
   Serial.begin(115200);
   Serial.println();
-  Serial.print("IP Address: "); Serial.println(WiFi.localIP());
-  // Configure the server's routes
-  server.on("/",handleIndex); // use the top root path to report the last sensor value
-  server.on("/update",handleUpdate); // use this route to update the sensor value
+  Serial.print("Configuring access point...");
+
+  WiFi.softAP(ssid, password);
+
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+  server.on("/data/", HTTP_GET, handleSentVar); // when the server receives a request with /data/ in the string then run the handleSentVar function
   server.begin();
+  Serial.println("HTTP server started");
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   server.handleClient();
 }
+
