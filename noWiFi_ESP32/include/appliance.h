@@ -3,21 +3,25 @@
 
 class Appliance{
     private:
-        int off;
-        int running;
-        int finished;
         
     public:
 
+        int off;
+        int running;
+        int finished;
+
         Ldr greenLed;
+        Ldr orangeLed;
+
         Appliance(){
         };
 
-    void intGreenSensor(int pin){
+    void intGreenLedSensor(int pin){
         greenLed = Ldr(pin);
     }
     
-    void addOrangeSensor(int pin){
+    void intOrangeLedSensor(int pin){
+        orangeLed = Ldr(pin);
     }
 
 };
