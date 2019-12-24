@@ -1,13 +1,11 @@
 # include <Arduino.h>
 # include <appliance.h>
-# include <led.h>
 
 
 // Variables
-Led led1(22);
-Led led2(23);
 
-Appliance washer;
+// Int with working led pin and finished led pin
+Appliance washer(22, 23);
 
 void setup() {
   Serial.begin(115200);
@@ -25,14 +23,14 @@ void loop() {
 
   
   if (washer.greenLedSensor.ledIsOn()) {
-    led1.on();
+    washer.finishedLed.on();
   } else{
-    led1.off();
+    washer.finishedLed.off();
   }
 
   if (washer.orangeLedSensor.ledIsOn()) {
-    led2.on();
+    washer.workingLed.on();
   } else{
-    led2.off();
+    washer.workingLed.off();
   }
 }

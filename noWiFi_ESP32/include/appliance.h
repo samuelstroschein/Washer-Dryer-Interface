@@ -1,4 +1,5 @@
 # include <Arduino.h>
+# include <led.h>
 # include <ldr.h>
 
 class Appliance{
@@ -13,7 +14,12 @@ class Appliance{
         Ldr greenLedSensor;
         Ldr orangeLedSensor;
 
-        Appliance(){
+        Led workingLed;
+        Led finishedLed;
+
+        Appliance(int working, int finished){
+            workingLed = Led(working);
+            finishedLed = Led(finished);
         };
 
     void intGreenLedSensor(int pin){

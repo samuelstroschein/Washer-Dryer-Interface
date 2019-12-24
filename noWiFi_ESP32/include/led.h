@@ -5,6 +5,13 @@ class Led {
         int pin;
     
     public:
+    
+        Led(){
+            this->pin = 0;
+            init();
+        }
+
+
         Led(int pin){
             this->pin = pin;
             init();
