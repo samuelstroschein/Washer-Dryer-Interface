@@ -1,11 +1,11 @@
 # include <Arduino.h>
 
-class LED {
+class Led {
     private:
         int pin;
     
     public:
-        LED(int pin){
+        Led(int pin){
             this->pin = pin;
             init();
         }

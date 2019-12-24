@@ -1,24 +1,28 @@
 # include <Arduino.h>
-# include <ldr.h>
+# include <appliance.h>
 # include <led.h>
 
 
 // Variables
 Led led1(22);
-Ldr ldr1(13);
+
+Appliance washer;
 
 void setup() {
   Serial.begin(115200);
+  washer.intGreenSensor(13);
 }
 
 void loop() {
   
-  Serial.println(ldr1.read());
+  Serial.println(washer.greenLed.read());
   delay(200);
 
-  if (ldr1.ledIsOn()) {
+  
+  if (washer.greenLed.ledIsOn()) {
     led1.on();
   } else{
     led1.off();
   }
+  
 }

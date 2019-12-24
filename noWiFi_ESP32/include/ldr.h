@@ -9,6 +9,13 @@ class Ldr {
         int pin;
 
     public:
+        
+
+        Ldr(){
+            this->pin = 0;
+            init();
+        }
+
         Ldr(int pin){
             this->pin = pin;
             init();
@@ -34,5 +41,7 @@ class Ldr {
     }
 
 };
+
+
 
 
