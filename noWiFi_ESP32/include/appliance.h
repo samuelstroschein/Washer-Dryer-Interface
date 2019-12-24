@@ -10,18 +10,18 @@ class Appliance{
         int running;
         int finished;
 
-        Ldr greenLed;
-        Ldr orangeLed;
+        Ldr greenLedSensor;
+        Ldr orangeLedSensor;
 
         Appliance(){
         };
 
     void intGreenLedSensor(int pin){
-        greenLed = Ldr(pin);
+        greenLedSensor = Ldr(pin);
     }
     
     void intOrangeLedSensor(int pin){
-        orangeLed = Ldr(pin);
+        orangeLedSensor = Ldr(pin);
     }
 
 };

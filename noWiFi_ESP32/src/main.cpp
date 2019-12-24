@@ -17,20 +17,20 @@ void setup() {
 
 void loop() {
   
-  Serial.println(washer.greenLed.read());
-  Serial.println(washer.orangeLed.read());
+  Serial.println(washer.greenLedSensor.read());
+  Serial.println(washer.orangeLedSensor.read());
   Serial.println("\n");
   delay(200);
 
 
   
-  if (washer.greenLed.ledIsOn()) {
+  if (washer.greenLedSensor.ledIsOn()) {
     led1.on();
   } else{
     led1.off();
   }
 
-  if (washer.orangeLed.ledIsOn()) {
+  if (washer.orangeLedSensor.ledIsOn()) {
     led2.on();
   } else{
     led2.off();
