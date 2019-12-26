@@ -1,4 +1,5 @@
 # include <Arduino.h>
+# include <analogWrite.h>
 
 class Led {
     private:
