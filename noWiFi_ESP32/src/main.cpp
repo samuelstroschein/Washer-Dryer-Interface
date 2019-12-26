@@ -2,16 +2,30 @@
 # include <appliance.h>
 
 
-// Variables
+// PINS
+const int washerWorkingLedPin = 22;
+const int washerFinishedLedPin = 23;
+const int washerGreenLedSensorPin = 13;
+const int washerOrangeLedSensorPin = 12;
+
+// LED STRIP PINS
+const int greenPin1 = 10;
+const int redPin1 = 5;
+
+const int greenPin2 = 21;
+const int redPin2 = 19;
+
 
 // Int with working led pin and finished led pin
-Appliance washer(22, 23);
+Appliance washer(washerWorkingLedPin, washerFinishedLedPin);
 
 void setup() {
-  Serial.begin(115200);
-  washer.intGreenLedSensor(13);
-  washer.intOrangeLedSensor(12);
+  Serial.begin(115200); 
+  washer.intGreenLedSensor(washerGreenLedSensorPin);
+  washer.intOrangeLedSensor(washerOrangeLedSensorPin);
+
 }
+
 
 void loop() {
   
@@ -19,8 +33,6 @@ void loop() {
   Serial.println(washer.orangeLedSensor.read());
   Serial.println("\n");
   delay(200);
-
-
   
   if (washer.greenLedSensor.ledIsOn()) {
     washer.finishedLed.on();
@@ -33,4 +45,5 @@ void loop() {
   } else{
     washer.workingLed.off();
   }
+
 }
