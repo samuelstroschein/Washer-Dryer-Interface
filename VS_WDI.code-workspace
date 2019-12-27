@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "noWiFi_ESP32"
+		},
+		{
+			"path": "Client"
+		},
+		{
+			"path": "Server"
+		}
+	],
+	"settings": {}
+}
