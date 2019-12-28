@@ -1,158 +1,78 @@
-
 # include <Arduino.h>
 # include <ESP8266WiFi.h>
+# include <ldr.h>
 
- 
 
-const char* ssid = "Plot";    //  Your Wi-Fi Name
-const char* password = "macbook1";   // Wi-Fi Password
+const char *ssid = "WDI_Server2";
+const char *password = "macbook1";
 
- 
-int LED = 14;   // led connected to GPIO2 (D4)
-int greenLed = 0;
+String dataString = "";        // value read from LDR's
 
-WiFiServer server(80);
+Ldr greenLdr(A0);
 
-void setup(){
-  Serial.begin(115200); //Default Baudrate
-  pinMode(LED, OUTPUT);
-  pinMode(greenLed, OUTPUT);
-  digitalWrite(LED, LOW);
-  digitalWrite(greenLed, LOW);
 
-  Serial.print("Connecting to the Newtork");
+void appendDataString(Ldr pin){
+  if (pin.ledIsOn()){
+    dataString += "1";
+  }
+  else{
+    dataString += "0";
+  }
+}
 
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  // Explicitly set the ESP8266 to be a WiFi-client
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED)
-
-  {
-
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-
-    Serial.print(".");
-
   }
-
-  Serial.println("WiFi connected"); 
-
-  server.begin();  // Starts the Server
-
-  Serial.println("Server started");
-
- 
-
-  Serial.print("IP Address of network: "); // will IP address on Serial Monitor
-
-  Serial.println(WiFi.localIP());
-
-  Serial.print("Copy and paste the following URL: https://"); // Will print IP address in URL format
-
-  Serial.print(WiFi.localIP());
-
-  Serial.println("/");
 
 }
 
- 
+void loop() {
 
-void loop(){
+  dataString = "";
+  appendDataString(greenLdr);
 
-  WiFiClient client = server.available();
 
-  if (!client){
+  // Use WiFiClient class to create TCP connections
+  WiFiClient client;
+  const char * host = "192.168.4.1";
+  const int httpPort = 80;
+
+  if (!client.connect(host, httpPort)) {
+    Serial.println("connection failed");
     return;
   }
 
-  Serial.println("Waiting for new client");
+  // We now create a URI for the request. Something like /data/?sensor_reading=123
+  String url = "/data/";
+  url += "?sensor_reading=";
+  url += dataString;
 
-  while(!client.available()){
-    delay(1);
+
+  // This will send the request to the server
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "Connection: close\r\n\r\n");
+  unsigned long timeout = millis();
+  while (client.available() == 0) {
+    Serial.println("While Triggered");
+    if (millis() - timeout > 5000) {
+      Serial.println(">>> Client Timeout !");
+      client.stop();
+      return;
+    }
   }
 
- 
+  Serial.println(dataString);
+  Serial.println(url);
 
-  String request = client.readStringUntil('\r');
-
-  Serial.println(request);
-
-  client.flush();
-
- 
-
-  int value = LOW;
-
-  if(request.indexOf("/LED=ON") != -1){
-    digitalWrite(LED, HIGH); // Turn LED ON
-    value = HIGH;
-  }
-  
-  if(request.indexOf("/LED=OFF") != -1){
-    digitalWrite(LED, LOW); // Turn LED OFF
-    value = LOW;
-  }
-
-  if(request.indexOf("/greenLED=ON") != -1){
-    digitalWrite(greenLed, HIGH); // Turn LED ON
-    value = HIGH;
-  }
-
-  if(request.indexOf("/greenLED=OFF") != -1){
-    digitalWrite(greenLed, LOW); // Turn LED ON
-    value = LOW;
-  }
- 
-
-//*------------------HTML Page Code---------------------*//
-
- 
-
-  client.println("HTTP/1.1 200 OK"); //
-
-  client.println("Content-Type: text/html");
-
-  client.println("");
-
-  client.println("<!DOCTYPE HTML>");
-
-  client.println("<html>");
-
- 
-
-  client.print(" CONTROL LED: ");
-
- 
-
-  if(value == HIGH)
-
-  {
-
-    client.print("ON");
-
-  }
-
-  else
-
-  {
-
-    client.print("OFF");
-
-  }
-
-  client.println("<br><br>");
-
-  client.println("<a href=\"/LED=ON\"\"><button>ON</button></a>");
-
-  client.println("<a href=\"/LED=OFF\"\"><button>OFF</button></a><br />");
-
-  client.println("</html>");
-
- 
-
-  delay(1);
-
-  Serial.println("Client disonnected");
-
-  Serial.println("");
-
+  delay(500);
 }
