@@ -54,7 +54,7 @@ void loop() {
   dataString = "";
   appendDataString(washerGreen);
   appendDataString(washerRed);
-  // appendDataString(dryerRed);
+  appendDataString(dryerRed);
 
 
   // Use WiFiClient class to create TCP connections
@@ -86,8 +86,11 @@ void loop() {
     }
   }
 
-  Serial.println(washerGreen.read() + washerRed.read() + dryerRed.read());
+  Serial.println(washerGreen.read());
+  Serial.println(washerRed.read());
+  Serial.println(dryerRed.read());
   Serial.println(url);
+  Serial.println("");
 
-  delay(500);
+  delay(1000);
 }
