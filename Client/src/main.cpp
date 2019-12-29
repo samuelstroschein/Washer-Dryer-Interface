@@ -1,5 +1,5 @@
 # include <Arduino.h>
-# include <ESP8266WiFi.h>
+# include <WiFi.h>
 # include <ldr.h>
 
 
@@ -8,7 +8,9 @@ const char *password = "macbook1";
 
 String dataString = "";        // value read from LDR's
 
-Ldr greenLdr(A0);
+Ldr washerGreen(32);
+Ldr washerRed(35);
+Ldr dryerRed(34);
 
 
 void appendDataString(Ldr pin){
@@ -25,20 +27,34 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  // Explicitly set the ESP8266 to be a WiFi-client
-  WiFi.mode(WIFI_STA);
+  // We start by connecting to a WiFi network
+
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+      delay(500);
+      Serial.print(".");
   }
 
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
+
 
 void loop() {
 
+  // This is the order in which booleans are send.
   dataString = "";
-  appendDataString(greenLdr);
+  appendDataString(washerGreen);
+  appendDataString(washerRed);
+  // appendDataString(dryerRed);
 
 
   // Use WiFiClient class to create TCP connections
@@ -63,7 +79,6 @@ void loop() {
                "Connection: close\r\n\r\n");
   unsigned long timeout = millis();
   while (client.available() == 0) {
-    Serial.println("While Triggered");
     if (millis() - timeout > 5000) {
       Serial.println(">>> Client Timeout !");
       client.stop();
@@ -71,7 +86,7 @@ void loop() {
     }
   }
 
-  Serial.println(dataString);
+  Serial.println(washerGreen.read() + washerRed.read() + dryerRed.read());
   Serial.println(url);
 
   delay(500);

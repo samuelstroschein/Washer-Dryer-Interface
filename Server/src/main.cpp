@@ -9,19 +9,29 @@ const char *password = "macbook1";
 
 ESP8266WebServer server(80);
 
-int LED = 14;   // led connected to GPIO2 (D4)
-int greenLed = 0;
+int washerRunningLed = 14;   // led connected to GPIO2 (D4)
+int washerFinishedLed = 0;
 
 
 void handleSentVar() {
   if (server.hasArg("sensor_reading")) { // this is the variable sent from the client
     int readingInt = server.arg("sensor_reading").toInt();
 
-    if (readingInt >= 1){
-      digitalWrite(LED, HIGH);
+    if (readingInt == 10){
+      digitalWrite(washerRunningLed, HIGH);
+      digitalWrite(washerFinishedLed, LOW);
     }
-    else{
-      digitalWrite(LED, LOW);
+    else if (readingInt == 11){
+      digitalWrite(washerRunningLed, HIGH);
+      digitalWrite(washerFinishedLed, HIGH);
+    }
+    else if (readingInt == 01){
+      digitalWrite(washerRunningLed, LOW);
+      digitalWrite(washerFinishedLed, HIGH);
+    }
+    else if (readingInt == 00){
+      digitalWrite(washerRunningLed, LOW);
+      digitalWrite(washerFinishedLed, LOW);
     }
 
     server.send(200, "text/html", "Data received");
@@ -31,10 +41,10 @@ void handleSentVar() {
 void setup() {
 
   Serial.begin(115200); //Default Baudrate
-  pinMode(LED, OUTPUT);
-  pinMode(greenLed, OUTPUT);
-  digitalWrite(LED, LOW);
-  digitalWrite(greenLed, LOW);
+  pinMode(washerRunningLed, OUTPUT);
+  pinMode(washerFinishedLed, OUTPUT);
+  digitalWrite(washerRunningLed, LOW);
+  digitalWrite(washerFinishedLed, LOW);
 
   delay(1000);
 
