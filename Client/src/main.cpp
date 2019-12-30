@@ -3,6 +3,8 @@
 # include <ldr.h>
 
 
+// TODO implement Neotimer 10sec stand in front of washer or dryer
+
 const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
