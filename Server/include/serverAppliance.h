@@ -5,6 +5,9 @@
 
 // Timer
 Neotimer blinkingInterval = Neotimer(750);
+
+
+// ? Still needed -> implemented in VibrationSensor class
 Neotimer minFalseAlarmTime = Neotimer(10000);
 
 

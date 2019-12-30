@@ -1,6 +1,6 @@
 # include <Arduino.h>
 # include <WiFi.h>
-# include <ldr.h>
+# include <vibrationSensor.h>
 
 
 // TODO implement Neotimer 10sec stand in front of washer or dryer
@@ -8,14 +8,14 @@
 const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
-String dataString = "";        // value read from LDR's
 
-Ldr washerGreen(32);
-Ldr washerRed(35);
-Ldr dryerRed(34);
+String dataString = "";
+
+VibrationSensor washer(32);
 
 
-void appendDataString(Ldr pin){
+/*
+void appendDataString(VibrationSensor pin){
   if (pin.ledIsOn()){
     dataString += "1";
   }
@@ -23,7 +23,7 @@ void appendDataString(Ldr pin){
     dataString += "0";
   }
 }
-
+*/
 
 void setup() {
   Serial.begin(115200);
@@ -49,14 +49,13 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 
-
+// TODO loop only if change of status
 void loop() {
+
+  washer.measure();
 
   // This is the order in which booleans are send.
   dataString = "";
-  appendDataString(washerGreen);
-  appendDataString(washerRed);
-  appendDataString(dryerRed);
 
 
   // Use WiFiClient class to create TCP connections
@@ -88,11 +87,11 @@ void loop() {
     }
   }
 
-  Serial.println(washerGreen.read());
-  Serial.println(washerRed.read());
-  Serial.println(dryerRed.read());
+  
+  Serial.println(washer.read());
+  Serial.println(washer.returnAverage());
   Serial.println(url);
   Serial.println("");
-
+  
   delay(1000);
 }

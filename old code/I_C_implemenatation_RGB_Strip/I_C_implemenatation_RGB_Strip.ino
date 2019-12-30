@@ -120,8 +120,8 @@ void loop(){
   if (digitalRead(pirSensor) == HIGH){
     motionCounter = motionCounter + 1;
     motionTimer.start();                                            //resume because function would restart timer every time otherwise
-    Serial.print("Motion Counter ");
-    Serial.print(motionCounter);
+    //Serial.print("Motion Counter ");
+    //Serial.print(motionCounter);
   }
   if (motionTimer.done()){
     motionCounter = 0;
