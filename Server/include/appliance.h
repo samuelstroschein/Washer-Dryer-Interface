@@ -1,7 +1,14 @@
 # include <Arduino.h>
 # include <led.h>
+# include <neotimer.h>
 
 
+// Timer
+Neotimer blinkingInterval = Neotimer(750);
+Neotimer minFalseAlarmTime = Neotimer(10000);
+
+
+// Methods
 int convertCharToInt(int charInput){
     if (charInput == 48){
         return 0;
@@ -36,7 +43,7 @@ class Appliance{
             this->finished = convertCharToInt(inputFinished);
         }
 
-        void processAppliance(){
+        void processLights(){
             if (running == 1){
                 workingLed.on();
                 finishedLed.off();

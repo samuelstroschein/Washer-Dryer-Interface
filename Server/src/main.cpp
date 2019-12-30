@@ -21,17 +21,13 @@ Appliance washer(washerRunningLedPin, washerFinishedLedPin);
 
 
 void handleSentVar() {
-  if (server.hasArg("sensor_reading")) { // this is the variable sent from the client
-
+  if (server.hasArg("sensor_reading")) { 
     // dataString = ["bool washerRunning, bool washerFinished, 
     //                bool dryerRunning, bool dryerFinished"]
     String dataString = server.arg("sensor_reading");
-    int dryerRunning = dataString.charAt(2);
-    int dryerFinished = dataString.charAt(3);
-
-    int testValue = dataString.substring(0,0).toInt();
 
     washer.clientInput(dataString.charAt(0), dataString.charAt(1));
+    // TODO dryer.clientInput
 
     Serial.println(dataString.charAt(0));
     Serial.println(washer.running);
@@ -43,12 +39,6 @@ void handleSentVar() {
 void setup() {
 
   Serial.begin(115200); //Default Baudrate
-  /*
-  pinMode(washerRunningLedPin, OUTPUT);
-  pinMode(washerFinishedLedPin, OUTPUT);
-  digitalWrite(washerRunningLedPin, LOW);
-  digitalWrite(washerFinishedLedPin, LOW);
-  */
 
   delay(1000);
 
@@ -61,5 +51,5 @@ void setup() {
 
 void loop() {
   server.handleClient();
-  washer.processAppliance();
+  washer.processLights();
 }
