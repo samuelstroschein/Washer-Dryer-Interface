@@ -10,13 +10,14 @@ class VibrationSensor {
         const int aboveAverageRunning = 400;
 
         // num of HIGH values in readinmmgs array
-        const int runningAbove = 20;
+        const int runningThreshold = 20;
 
         // Timer
         Neotimer falseAlarmTimer = Neotimer(10000);
         Neotimer delayMeasure = Neotimer(1000);
 
 
+        // TODO increase to 3 min?
         // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds
         static const int numReadings = 60;
         int readings[numReadings];      // the readings from the analog input
@@ -74,10 +75,7 @@ class VibrationSensor {
                 // ...wrap around to the beginning:
                 readIndex = 0;
             }
-            /*
-            // calculate the average:
-            this->average = float((total / numReadings));
-            */
+            
         }
         
         int countHighs(){
@@ -100,8 +98,8 @@ class VibrationSensor {
             }
         }
 
-        int applianceIsRunning(){
-            if ((this->average >= aboveAverageRunning) && falseAlarmTimer.done()){
+        int isRunning(){
+            if (countHighs() >= runningThreshold){
                 return true;
             }
             else{

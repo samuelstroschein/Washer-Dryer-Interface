@@ -14,16 +14,16 @@ String dataString = "";
 VibrationSensor washer(32);
 
 
-/*
-void appendDataString(VibrationSensor pin){
-  if (pin.ledIsOn()){
+
+void appendDataString(VibrationSensor appliance){
+  if (appliance.isRunning()){
     dataString += "1";
   }
   else{
     dataString += "0";
   }
 }
-*/
+
 
 void setup() {
   Serial.begin(115200);
@@ -48,15 +48,16 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-
+‚
 // TODO loop only if change of status
 void loop() {
-
-  washer.measure();
-
-  // This is the order in which booleans are send.
+  // This is the order in which LED instructions are send.
   dataString = "";
 
+  washer.measure();
+  // TODO dryer.measure();
+
+  appendDataString(washer);
 
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
@@ -68,7 +69,7 @@ void loop() {
     return;
   }
 
-  // We now create a URI for the request. Something like /data/?sensor_reading=123
+  // create a URI for the request. Something like /data/?sensor_reading=123
   String url = "/data/";
   url += "?sensor_reading=";
   url += dataString;
@@ -87,7 +88,7 @@ void loop() {
     }
   }
 
-  
+  // Debug print statements  
   Serial.println(washer.read());
   Serial.println(washer.countHighs());
   Serial.println(url);
