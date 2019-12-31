@@ -89,7 +89,7 @@ void loop() {
 
   
   Serial.println(washer.read());
-  Serial.println(washer.returnAverage());
+  Serial.println(washer.countHighs());
   Serial.println(url);
   Serial.println("");
   

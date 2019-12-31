@@ -5,25 +5,32 @@ class VibrationSensor {
     
     private:
 
+        //? still needed?
         const int belowAverageReset = 10;
         const int aboveAverageRunning = 400;
 
+        // num of HIGH values in readinmmgs array
+        const int runningAbove = 20;
+
         // Timer
         Neotimer falseAlarmTimer = Neotimer(10000);
+        Neotimer delayMeasure = Neotimer(1000);
 
-        //Smoothing of the vibrationSensor data number of arrays multiplied with delay on line 38 = max duration of pause
-        static const int numReadings = 10;
-        float readings[numReadings];    // the readings from the analog input
+
+        // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds
+        static const int numReadings = 60;
+        int readings[numReadings];      // the readings from the analog input
         int readIndex = 0;              // the index of the current reading
-        float total = 0;                // the running total
-        float average = 0;              // the average
+        int total = 0;                  // the running total
+        // ? not needed anymore? (average)
+        int average = 0;                // the average
 
         // Pin
         int pin;
 
     public:
 
-        // INIT
+        // Initalization
         VibrationSensor(){
             this->pin = 0;
             init();
@@ -57,7 +64,7 @@ class VibrationSensor {
             // subtract the last reading:
             total = total - readings[readIndex];
             // read from the sensor:
-            readings[readIndex] = float(digitalRead(pin));
+            readings[readIndex] = digitalRead(pin);
             // add the reading to the total:
             total = total + readings[readIndex];
             // advance to the next position in the array:
@@ -67,10 +74,24 @@ class VibrationSensor {
                 // ...wrap around to the beginning:
                 readIndex = 0;
             }
+            /*
             // calculate the average:
             this->average = float((total / numReadings));
+            */
         }
         
+        int countHighs(){
+            int result = 0;
+            for (byte i = 0; i<numReadings; i++){
+                if (readings[i] == 1){
+                    result += 1;
+                }
+            }
+            return result;
+        }
+
+
+        //? needed anylonger?
         void falseAlarmCheck(){
             // reset timer
             if (this->average < belowAverageReset){
