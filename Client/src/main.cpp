@@ -48,7 +48,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-‚
+
 // TODO loop only if change of status
 void loop() {
   // This is the order in which LED instructions are send.
