@@ -8,6 +8,10 @@
 		},
 		{
 			"path": "Server"
+		},
+		{
+			"name": "Client_ESP8266",
+			"path": "/Users/samuel/Documents/PlatformIO/Projects/Client_ESP8266"
 		}
 	],
 	"settings": {}

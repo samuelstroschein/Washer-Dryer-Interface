@@ -10,10 +10,15 @@ const char *password = "macbook1";
 
 
 String dataString = "";
+String lastSendDataString = "";
 
 VibrationSensor washer(32);
 
-
+int newData(String oldDataString){
+  if (oldDataString != lastSendDataString){
+    return true;
+  }
+}
 
 void appendDataString(VibrationSensor appliance){
   if (appliance.isRunning()){
@@ -49,7 +54,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 
-// TODO loop only if change of status
+
 void loop() {
   // This is the order in which LED instructions are send.
   dataString = "";
@@ -69,16 +74,21 @@ void loop() {
     return;
   }
 
-  // create a URI for the request. Something like /data/?sensor_reading=123
+  // create a URI for the request. Something like /data/?sensor_reading=
+  //                                         [ledWorking, ledFinished, ledWorking, ledFinished]
   String url = "/data/";
   url += "?sensor_reading=";
   url += dataString;
 
-
   // This will send the request to the server
-  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" +
-               "Connection: close\r\n\r\n");
+  if (newData(dataString)){
+    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Connection: close\r\n\r\n");
+    lastSendDataString = dataString;
+  }
+
+  
   unsigned long timeout = millis();
   while (client.available() == 0) {
     if (millis() - timeout > 5000) {
