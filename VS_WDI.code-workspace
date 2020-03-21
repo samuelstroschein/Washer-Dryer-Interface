@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "Server"
+		},
+		{
+			"path": "noWiFi_ESP32"
 		}
 	],
 	"settings": {}
