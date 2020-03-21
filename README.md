@@ -6,7 +6,7 @@ All sensors and logic happens on the ESP32 (Client). The ESP32 then sends 4 comm
 
 ### TODO:
   * Fix Server CLient communication
-    Continous WiFi connection drops.
+    Continous WiFi connection drops. [X]
   * Verify measurements of vibrations
   * Finish case for esp8266 in Fusion360
   * finish electronic circuit (parts are all available including 12V to 5V)
