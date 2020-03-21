@@ -3,19 +3,27 @@
 
 class Appliance{
     private:
+        VibrationSensor sensor;
+
         
     public:
 
-        // int off;
-        int running;
-        int finished;
+        //? needed
+        // int running;
+        // int finished;
 
         Appliance(int vibrationSensorPin){
             VibrationSensor sensor(vibrationSensorPin);
         };
 
-    bool isRunning(){
-        
+    int isRunning(){
+        if (sensor.returnsIsRunning()){
+            return true;
+        }
+    }
+
+    int isFinished(){
+
     }
 
 };

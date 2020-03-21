@@ -98,7 +98,7 @@ class VibrationSensor {
             }
         }
 
-        int isRunning(){
+        int returnsIsRunning(){
             if (countHighs() >= runningThreshold){
                 return true;
             }

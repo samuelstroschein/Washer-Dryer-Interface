@@ -8,7 +8,7 @@ Neotimer blinkingInterval = Neotimer(750);
 
 
 // ? Still needed -> implemented in VibrationSensor class
-Neotimer minFalseAlarmTime = Neotimer(10000);
+// Neotimer minFalseAlarmTime = Neotimer(10000);
 
 
 // Methods
@@ -41,7 +41,6 @@ class Appliance{
 
         // Methods 
         void clientInput(int inputRunning, int inputFinished){
-            
             this->running = convertCharToInt(inputRunning);
             this->finished = convertCharToInt(inputFinished);
         }

@@ -1,19 +1,30 @@
 # include <Arduino.h>
 # include <ESP8266WiFi.h>
 # include <vibrationSensor.h>
+# include <appliance.h>
 
 
 // TODO implement Neotimer 10sec stand in front of washer or dryer
 
+// Wifi server credentials
 const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
+// Pins of vibration sensor of appliances
+const int WASHER_PIN = 5;
+const int DRYER_PIN = 4;
 
+// Appliances
+VibrationSensor washer(WASHER_PIN);
+VibrationSensor dryer(DRYER_PIN);
+
+// to compare old data string with new
+// in order to only send new information
 String dataString = "";
 String lastSendDataString = "";
 
-VibrationSensor washer(5);
 
+// definition of methods(functions)
 int newData(String oldDataString){
   if (oldDataString != lastSendDataString){
     return true;
@@ -21,7 +32,7 @@ int newData(String oldDataString){
 }
 
 void appendDataString(VibrationSensor appliance){
-  if (appliance.isRunning()){
+  if (appliance.returnsIsRunning()){
     dataString += "1";
   }
   else{
@@ -36,22 +47,12 @@ void setup() {
 
   // We start by connecting to a WiFi network
 
-  Serial.println();
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
   }
-
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
 }
 
 
@@ -75,7 +76,7 @@ void loop() {
   }
 
   // create a URI for the request. Something like /data/?sensor_reading=
-  //                                         [ledWorking, ledFinished, ledWorking, ledFinished]
+  //                                         [isRunning, isFinished, isRunning, isFinished]
   String url = "/data/";
   url += "?sensor_reading=";
   url += dataString;
