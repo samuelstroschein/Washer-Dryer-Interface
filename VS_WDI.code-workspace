@@ -1,11 +1,11 @@
 {
 	"folders": [
 		{
-			"path": "Server"
+			"name": "Client_ESP8266",
+			"path": "Client_ESP8266"
 		},
 		{
-			"name": "Client_ESP8266",
-			"path": "/Users/samuel/Documents/PlatformIO/Projects/Client_ESP8266"
+			"path": "Server"
 		}
 	],
 	"settings": {}
