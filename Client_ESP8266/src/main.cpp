@@ -1,7 +1,7 @@
 # include <Arduino.h>
 # include <ESP8266WiFi.h>
-# include <vibrationSensor.h>
 # include <appliance.h>
+# include <neotimer.h>
 
 
 // TODO implement Neotimer 10sec stand in front of washer or dryer
@@ -12,11 +12,11 @@ const char *password = "macbook1";
 
 // Pins of vibration sensor of appliances
 const int WASHER_PIN = 5;
-const int DRYER_PIN = 4;
+// const int DRYER_PIN = 4;
 
 // Appliances
-VibrationSensor washer(WASHER_PIN);
-VibrationSensor dryer(DRYER_PIN);
+Appliance washer(WASHER_PIN);
+// Appliance dryer(DRYER_PIN);
 
 // to compare old data string with new
 // in order to only send new information
@@ -24,28 +24,46 @@ String dataString = "";
 String lastSendDataString = "";
 
 
-// definition of methods(functions)
+// --------------- definition of methods(functions) ------------------------
 int newData(String oldDataString){
   if (oldDataString != lastSendDataString){
     return true;
   }
 }
 
-void appendDataString(VibrationSensor appliance){
-  if (appliance.returnsIsRunning()){
-    dataString += "1";
+void appendDataString(Appliance appliance){
+  if (appliance.isRunning()){
+    dataString += "1";  // appliance running
+    dataString += "0";  // appliance not finished
   }
-  else{
-    dataString += "0";
+  if (appliance.isFinished()){
+    dataString += "0";  // appliance not running
+    dataString += "1";  // appliance finished
   }
 }
 
+
+void applianceIsFinished(Appliance appliance){
+  
+}
+
+
+// ---------------------- START OF PROGRAM -----------------------
 
 void setup() {
   Serial.begin(9600);
   delay(10);
 
   // We start by connecting to a WiFi network
+
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 
   WiFi.begin(ssid, password);
 
@@ -57,14 +75,6 @@ void setup() {
 
 
 void loop() {
-  // This is the order in which LED instructions are send.
-  dataString = "";
-
-  washer.measure();
-  // TODO dryer.measure();
-
-  appendDataString(washer);
-
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const char * host = "192.168.4.1";
@@ -74,6 +84,18 @@ void loop() {
     Serial.println("connection failed");
     return;
   }
+
+
+  // This is the order in which LED instructions are send. 
+  // [WasherIsRunning, WasherIsFinished, DryerIsRunning, DryerIsFinished]
+  dataString = "";
+
+  washer.sensor.measure();
+  // TODO dryer.measure();
+
+  appendDataString(washer);
+
+  
 
   // create a URI for the request. Something like /data/?sensor_reading=
   //                                         [isRunning, isFinished, isRunning, isFinished]
@@ -92,7 +114,7 @@ void loop() {
   
   unsigned long timeout = millis();
   while (client.available() == 0) {
-    if (millis() - timeout > 5000) {
+    if (millis() - timeout > 3000) {
       Serial.println(">>> Client Timeout !");
       client.stop();
       return;
@@ -100,8 +122,9 @@ void loop() {
   }
 
   // Debug print statements  
-  Serial.println(washer.read());
-  Serial.println(washer.countHighs());
+  // Serial.println(washer.sensor.returnPin());
+  Serial.println(washer.sensor.read());
+  Serial.println(washer.sensor.countHighs());
   Serial.println(url);
   Serial.println("");
   

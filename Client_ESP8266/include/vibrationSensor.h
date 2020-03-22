@@ -6,16 +6,18 @@ class VibrationSensor {
     private:
 
         //? still needed?
-        const int belowAverageReset = 10;
-        const int aboveAverageRunning = 400;
+        static const int belowAverageReset = 10;
+        static const int aboveAverageRunning = 400;
 
-        // num of HIGH values in readinmmgs array
-        const int runningThreshold = 20;
+        // num of HIGH values in readings array
+        static const int runningThreshold = 20;
 
         // Timer
         Neotimer falseAlarmTimer = Neotimer(10000);
         Neotimer delayMeasure = Neotimer(1000);
+        Neotimer wasRunningTimer = Neotimer(10000);
 
+        int wasRunning;
 
         // TODO increase to 3 min?
         // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds
@@ -60,6 +62,10 @@ class VibrationSensor {
             return this->average;
         }
 
+        int returnPin(){
+            return this->pin;
+        }
+
         // Methods
         void measure(){
             // subtract the last reading:
@@ -88,6 +94,14 @@ class VibrationSensor {
             return result;
         }
 
+        int returnsIsFinished(){
+            if (returnsIsRunning() == false && wasRunning == true){
+                return true;
+            } else{
+                return false;
+            }
+        }
+
 
         //? needed anylonger?
         void falseAlarmCheck(){
@@ -100,7 +114,11 @@ class VibrationSensor {
 
         int returnsIsRunning(){
             if (countHighs() >= runningThreshold){
+                this->wasRunning = true;
                 return true;
+            }
+            else if (wasRunningTimer.repeat()){
+                this->wasRunning = false;
             }
             else{
                 return false;

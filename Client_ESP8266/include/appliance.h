@@ -3,27 +3,34 @@
 
 class Appliance{
     private:
-        VibrationSensor sensor;
+        int running;    // logic programmed in VibrationSensor class
 
         
     public:
+        // int wasRunning; // logic programmed in main, therefore public
+        // int finished;   // logic programmed in main, therefore public
 
-        //? needed
-        // int running;
-        // int finished;
+        VibrationSensor sensor;
 
         Appliance(int vibrationSensorPin){
-            VibrationSensor sensor(vibrationSensorPin);
+            sensor = VibrationSensor(vibrationSensorPin);
         };
 
+    // threshold for isRunning programmed in VibrationSensor class
     int isRunning(){
         if (sensor.returnsIsRunning()){
             return true;
+        } else{
+            return false;
         }
     }
 
     int isFinished(){
-
+        if (sensor.returnsIsFinished()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 };
