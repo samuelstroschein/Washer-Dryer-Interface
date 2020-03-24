@@ -4,25 +4,23 @@
 # include <pirSensor.h>
 # include <neotimer.h>
 
-
-// TODO implement Neotimer 10sec stand in front of washer or dryer
-
 // Wifi server credentials
 const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
 // Pins of vibration sensor of appliances
-const int WASHER_PIN = 5;
-const int PIR_PIN = 0;
-// const int DRYER_PIN = 4;
+const int washerSensorPin = 5;
+//TODO assign value to dryer pin
+const int dryerSensorPin;
+const int pirPin = 0;
 
 // Appliances
-Appliance washer(WASHER_PIN);
-// Appliance dryer(DRYER_PIN);
+Appliance washer(washerSensorPin);
+Appliance dryer(dryerSensorPin);
 
 
 // PIR Sensor to detect emptying of appliances
-PirSensor pirSensor(PIR_PIN);
+PirSensor pirSensor(pirPin);
 
 // query which contains the BOOLEAN values which light should be on
 String dataString = "";
@@ -43,10 +41,6 @@ void appendDataString(Appliance appliance){
   }
 }
 
-
-// void applianceIsFinished(Appliance appliance){
-  
-// }
 
 
 // ---------------------- START OF PROGRAM -----------------------
@@ -92,20 +86,23 @@ void loop() {
   dataString = "";
 
   washer.sensor.measure();
-  // TODO dryer.measure();
+  dryer.sensor.measure();
   pirSensor.measure();
 
+  // appends information about washer first e.g "01" (washer not running, washer finished)
+  // then information about dryer e.g. "00" (dryer not running, dryer not finsihed)
   appendDataString(washer);
+  appendDataString(dryer);
 
   
 
   // create a URI for the request. Something like /data/?sensor_reading=
-  //                                         [isRunning, isFinished, isRunning, isFinished]
+  //                               [WasherIsRunning, WasherIsFinished, DryerIsRunning, DryerIsFinished]
   String url = "/data/";
   url += "?sensor_reading=";
   url += dataString;
 
-
+  // send data string to server
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Connection: close\r\n\r\n");
@@ -119,24 +116,27 @@ void loop() {
     }
   }
 
+  // To turn off the finished status
+  // double if statement because both can be finished at the same time
   if (pirSensor.detectsPerson()){
     if (washer.isFinished()){
       washer.wasEmptied();
     }
-    //TODO add dryer
+    if (dryer.isFinished()){
+      dryer.wasEmptied();
+    }
   }
 
   // Debug print statements  
-  // Serial.println(washer.sensor.returnPin());
-  Serial.println(washer.sensor.read());
-  Serial.println(washer.sensor.countHighs());
-  Serial.println(washer.isRunning());
-  Serial.println(washer.isFinished());
-  Serial.println(url);
-  Serial.println("");
-  Serial.println(pirSensor.motionCounter);
-  Serial.println(pirSensor.detectsPerson());
-  Serial.println("");
+    Serial.println(washer.sensor.read());
+    Serial.println(washer.sensor.countHighs());
+    Serial.println(washer.isRunning());
+    Serial.println(washer.isFinished());
+    Serial.println(url);
+    Serial.println("");
+    Serial.println(pirSensor.motionCounter);
+    Serial.println(pirSensor.detectsPerson());
+    Serial.println("");
   
   delay(1000);
 }
