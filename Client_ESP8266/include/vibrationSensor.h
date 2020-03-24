@@ -15,13 +15,13 @@ class VibrationSensor {
         // Timer
         Neotimer falseAlarmTimer = Neotimer(10000);
         Neotimer delayMeasure = Neotimer(1000);
-        Neotimer wasRunningTimer = Neotimer(10000);
 
         int wasRunning;
 
+
         // TODO increase to 3 min?
         // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds
-        static const int numReadings = 60;
+        static const int numReadings = 30;
         int readings[numReadings];      // the readings from the analog input
         int readIndex = 0;              // the index of the current reading
         int total = 0;                  // the running total
@@ -32,7 +32,6 @@ class VibrationSensor {
         int pin;
 
     public:
-
         // Initalization
         VibrationSensor(){
             this->pin = 0;
@@ -116,9 +115,6 @@ class VibrationSensor {
             if (countHighs() >= runningThreshold){
                 this->wasRunning = true;
                 return true;
-            }
-            else if (wasRunningTimer.repeat()){
-                this->wasRunning = false;
             }
             else{
                 return false;

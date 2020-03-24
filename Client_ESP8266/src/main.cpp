@@ -18,18 +18,13 @@ const int WASHER_PIN = 5;
 Appliance washer(WASHER_PIN);
 // Appliance dryer(DRYER_PIN);
 
-// to compare old data string with new
-// in order to only send new information
+// query which contains the BOOLEAN values which light should be on
 String dataString = "";
-String lastSendDataString = "";
+
 
 
 // --------------- definition of methods(functions) ------------------------
-int newData(String oldDataString){
-  if (oldDataString != lastSendDataString){
-    return true;
-  }
-}
+
 
 void appendDataString(Appliance appliance){
   if (appliance.isRunning()){
@@ -43,9 +38,9 @@ void appendDataString(Appliance appliance){
 }
 
 
-void applianceIsFinished(Appliance appliance){
+// void applianceIsFinished(Appliance appliance){
   
-}
+// }
 
 
 // ---------------------- START OF PROGRAM -----------------------
@@ -103,14 +98,10 @@ void loop() {
   url += "?sensor_reading=";
   url += dataString;
 
-  // This will send the request to the server
-  if (newData(dataString)){
-    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Connection: close\r\n\r\n");
-    lastSendDataString = dataString;
-  }
-
   
   unsigned long timeout = millis();
   while (client.available() == 0) {
@@ -125,6 +116,8 @@ void loop() {
   // Serial.println(washer.sensor.returnPin());
   Serial.println(washer.sensor.read());
   Serial.println(washer.sensor.countHighs());
+  Serial.println(washer.isRunning());
+  Serial.println(washer.isFinished());
   Serial.println(url);
   Serial.println("");
   

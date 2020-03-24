@@ -30,7 +30,7 @@ void handleSentVar() {
     // TODO dryer.clientInput
 
     Serial.println(dataString.charAt(0));
-    Serial.println(washer.running);
+    Serial.println(dataString);
 
     server.send(200, "text/html", "Data received");
   }
@@ -38,7 +38,7 @@ void handleSentVar() {
 
 void setup() {
 
-  Serial.begin(115200); //Default Baudrate
+  Serial.begin(9600); //Default Baudrate
 
   delay(1000);
 
@@ -52,4 +52,5 @@ void setup() {
 void loop() {
   server.handleClient();
   washer.processLights();
+
 }
