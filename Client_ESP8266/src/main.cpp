@@ -1,6 +1,7 @@
 # include <Arduino.h>
 # include <ESP8266WiFi.h>
 # include <appliance.h>
+# include <pirSensor.h>
 # include <neotimer.h>
 
 
@@ -12,11 +13,16 @@ const char *password = "macbook1";
 
 // Pins of vibration sensor of appliances
 const int WASHER_PIN = 5;
+const int PIR_PIN = 0;
 // const int DRYER_PIN = 4;
 
 // Appliances
 Appliance washer(WASHER_PIN);
 // Appliance dryer(DRYER_PIN);
+
+
+// PIR Sensor to detect emptying of appliances
+PirSensor pirSensor(PIR_PIN);
 
 // query which contains the BOOLEAN values which light should be on
 String dataString = "";
@@ -87,6 +93,7 @@ void loop() {
 
   washer.sensor.measure();
   // TODO dryer.measure();
+  pirSensor.measure();
 
   appendDataString(washer);
 
@@ -112,6 +119,13 @@ void loop() {
     }
   }
 
+  if (pirSensor.detectsPerson()){
+    if (washer.isFinished()){
+      washer.wasEmptied();
+    }
+    //TODO add dryer
+  }
+
   // Debug print statements  
   // Serial.println(washer.sensor.returnPin());
   Serial.println(washer.sensor.read());
@@ -119,6 +133,9 @@ void loop() {
   Serial.println(washer.isRunning());
   Serial.println(washer.isFinished());
   Serial.println(url);
+  Serial.println("");
+  Serial.println(pirSensor.motionCounter);
+  Serial.println(pirSensor.detectsPerson());
   Serial.println("");
   
   delay(1000);

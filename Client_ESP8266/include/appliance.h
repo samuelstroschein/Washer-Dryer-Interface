@@ -33,4 +33,8 @@ class Appliance{
         }
     }
 
+    void wasEmptied(){
+        sensor.reset();
+    }
+
 };

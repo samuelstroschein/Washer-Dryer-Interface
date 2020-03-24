@@ -120,6 +120,10 @@ class VibrationSensor {
                 return false;
             }
         }
+
+        void reset(){
+            this-> wasRunning = false;
+        }
 };
 
 
