@@ -10,8 +10,7 @@ const char *password = "macbook1";
 
 // Pins of vibration sensor of appliances
 const int washerSensorPin = 5;
-//TODO assign value to dryer pin
-const int dryerSensorPin;
+const int dryerSensorPin = 14;
 const int pirPin = 0;
 
 // Appliances
@@ -38,6 +37,10 @@ void appendDataString(Appliance appliance){
   if (appliance.isFinished()){
     dataString += "0";  // appliance not running
     dataString += "1";  // appliance finished
+  }
+  else {
+    dataString += "0";
+    dataString += "0";
   }
 }
 
@@ -128,10 +131,16 @@ void loop() {
   }
 
   // Debug print statements  
+    Serial.println("WASHER:");
     Serial.println(washer.sensor.read());
     Serial.println(washer.sensor.countHighs());
     Serial.println(washer.isRunning());
     Serial.println(washer.isFinished());
+    Serial.println("DRYER:");
+    Serial.println(dryer.sensor.read());
+    Serial.println(dryer.sensor.countHighs());
+    Serial.println(dryer.isRunning());
+    Serial.println(dryer.isFinished());
     Serial.println(url);
     Serial.println("");
     Serial.println(pirSensor.motionCounter);
