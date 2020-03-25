@@ -1,9 +1,14 @@
 # include <Arduino.h>
+# include <neotimer.h>
+
+// outside of class because boolean values cant be in class in C++.... wow
+
 
 class Led {
     private:
         int pin;
-    
+        Neotimer blinkingInterval = Neotimer(750); 
+        bool blinkSwitch = false;
     public:
     
         Led(){
@@ -16,11 +21,13 @@ class Led {
             this->pin = pin;
             init();
         }
+
+
     
     void init(){
         pinMode(pin, OUTPUT);
         digitalWrite(pin, LOW);
-
+        blinkingInterval.start();
         off();
     }
 
@@ -30,5 +37,18 @@ class Led {
 
     void off(){
         digitalWrite(pin, LOW);
+    }
+
+    void blink(){
+        // every 750ms change BOOL value of blink
+        if (blinkingInterval.repeat()){
+            this->blinkSwitch = !blinkSwitch;
+        }
+        if(blinkSwitch){
+            on();
+        }
+        else{
+            off();
+        }
     }
 };

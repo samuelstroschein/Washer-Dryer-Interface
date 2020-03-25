@@ -16,7 +16,6 @@ int convertCharToInt(int charInput){
 
 class Appliance{
     private:
-        Neotimer blinkingInterval = Neotimer(750);
         
     public:
 
@@ -30,7 +29,6 @@ class Appliance{
         Appliance(int working, int finished){
             workingLed = Led(working);
             finishedLed = Led(finished);
-            blinkingInterval.start();
         };
 
 
@@ -40,16 +38,6 @@ class Appliance{
             this->finished = convertCharToInt(inputFinished);
         }
 
-        void finishedLedBlinking(){
-            int blink = false;
-            if (blinkingInterval.repeat()){
-                blink = !blink;
-            }
-            if(blink){
-                finishedLed.on();
-            }
-        }
-
         void processLights(){
             if (running == 1){
                 workingLed.on();
@@ -57,7 +45,7 @@ class Appliance{
             }
             else if (finished == 1){
                 workingLed.off();
-                finishedLedBlinking();
+                finishedLed.blink();
             }
             else {
                 workingLed.off();
