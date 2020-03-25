@@ -34,7 +34,7 @@ void appendDataString(Appliance appliance){
     dataString += "1";  // appliance running
     dataString += "0";  // appliance not finished
   }
-  if (appliance.isFinished()){
+  else if (appliance.isFinished()){
     dataString += "0";  // appliance not running
     dataString += "1";  // appliance finished
   }
