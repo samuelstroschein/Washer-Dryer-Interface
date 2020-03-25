@@ -15,8 +15,8 @@ ESP8266WebServer server(80);
 const int washerRunningLedPin = 14;   // led connected to GPIO2 (D4)
 const int washerFinishedLedPin = 0;
 
-const int dryerRunningLedPin;
-const int dryerFinishedLedPin;
+const int dryerRunningLedPin = 5;
+const int dryerFinishedLedPin = 4;
 
 
 // Appliances
@@ -31,7 +31,7 @@ void handleSentVar() {
     String dataString = server.arg("sensor_reading");
 
     washer.clientInput(dataString.charAt(0), dataString.charAt(1));
-    dryer.clientInput(dataString.charAt(3), dataString.charAt(4));
+    dryer.clientInput(dataString.charAt(2), dataString.charAt(3));
 
     Serial.println(dataString.charAt(0));
     Serial.println(dataString);

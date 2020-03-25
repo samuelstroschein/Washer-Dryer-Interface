@@ -3,14 +3,6 @@
 # include <neotimer.h>
 
 
-// Timer
-Neotimer blinkingInterval = Neotimer(750);
-
-
-// ? Still needed -> implemented in VibrationSensor class
-// Neotimer minFalseAlarmTime = Neotimer(10000);
-
-
 // Methods
 int convertCharToInt(int charInput){
     if (charInput == 48){
@@ -24,6 +16,7 @@ int convertCharToInt(int charInput){
 
 class Appliance{
     private:
+        Neotimer blinkingInterval = Neotimer(750);
         
     public:
 
@@ -33,9 +26,11 @@ class Appliance{
         Led workingLed;
         Led finishedLed;
 
+        // initalization
         Appliance(int working, int finished){
             workingLed = Led(working);
             finishedLed = Led(finished);
+            blinkingInterval.start();
         };
 
 
@@ -45,6 +40,16 @@ class Appliance{
             this->finished = convertCharToInt(inputFinished);
         }
 
+        void finishedLedBlinking(){
+            int blink = false;
+            if (blinkingInterval.repeat()){
+                blink = !blink;
+            }
+            if(blink){
+                finishedLed.on();
+            }
+        }
+
         void processLights(){
             if (running == 1){
                 workingLed.on();
@@ -52,7 +57,7 @@ class Appliance{
             }
             else if (finished == 1){
                 workingLed.off();
-                finishedLed.on();
+                finishedLedBlinking();
             }
             else {
                 workingLed.off();

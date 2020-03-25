@@ -10,7 +10,7 @@ class VibrationSensor {
         static const int aboveAverageRunning = 400;
 
         // num of HIGH values in readings array
-        static const int runningThreshold = 20;
+        static const int runningThreshold = 10;
 
         // Timer
         Neotimer falseAlarmTimer = Neotimer(10000);
