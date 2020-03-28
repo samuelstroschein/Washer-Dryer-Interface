@@ -12,16 +12,18 @@ ESP8266WebServer server(80);
 
 
 // LED PINS
-const int washerRunningLedPin = 14;   // led connected to GPIO2 (D4)
-const int washerFinishedLedPin = 0;
 
+const int dryerFinishedLedPin = 16;
 const int dryerRunningLedPin = 5;
-const int dryerFinishedLedPin = 4;
+
+
+const int washerFinishedLedPin = 12;
+const int washerRunningLedPin = 15;   // led connected to GPIO2 (D4)
 
 
 // Appliances
-Appliance washer(washerRunningLedPin, washerFinishedLedPin);
 Appliance dryer(dryerRunningLedPin, dryerFinishedLedPin);
+Appliance washer(washerRunningLedPin, washerFinishedLedPin);
 
 
 void handleSentVar() {
