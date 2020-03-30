@@ -80,7 +80,6 @@ void loop() {
 
   if (!client.connect(host, httpPort)) {
     Serial.println("connection failed");
-    return;
   }
 
 
@@ -109,15 +108,6 @@ void loop() {
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Connection: close\r\n\r\n");
-  
-  unsigned long timeout = millis();
-  while (client.available() == 0) {
-    if (millis() - timeout > 3000) {
-      Serial.println(">>> Client Timeout !");
-      client.stop();
-      return;
-    }
-  }
 
   // To turn off the finished status
   // double if statement because both can be finished at the same time
