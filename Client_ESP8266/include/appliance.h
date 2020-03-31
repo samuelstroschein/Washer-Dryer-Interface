@@ -1,40 +1,59 @@
 # include <Arduino.h>
-# include <vibrationSensor.h>
+# include <ldr.h>
 
 class Appliance{
     private:
-        int running;    // logic programmed in VibrationSensor class
 
-        
+    
     public:
-        // int wasRunning; // logic programmed in main, therefore public
-        // int finished;   // logic programmed in main, therefore public
+        Ldr combinedSensor; // is On when appliance is runnning, Blinks when appliance is finished
+        Ldr turnedOnSensor;
+        Ldr finishedSensor;
 
-        VibrationSensor sensor;
 
-        Appliance(int vibrationSensorPin){
-            sensor = VibrationSensor(vibrationSensorPin);
-        };
+        Appliance(int combinedSensorPin){
+            combinedSensor = Ldr(combinedSensorPin);
+        }
+        Appliance(int turnedOnSensorPin, int finishedSensorPin){
+            turnedOnSensor = Ldr(turnedOnSensorPin);
+            finishedSensor = Ldr(finishedSensorPin);
+        }
 
-    // threshold for isRunning programmed in VibrationSensor class
     int isRunning(){
-        if (sensor.returnsIsRunning()){
-            return true;
-        } else{
-            return false;
+        if (combinedSensor.pin != 0){
+            if (combinedSensor.lightOn()){
+                return true;
+            } 
+            else{
+                return false;
+            }
+        }
+        else {
+            if (turnedOnSensor.lightOn() && finishedSensor.lightOff()){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
     }
 
     int isFinished(){
-        if (sensor.returnsIsFinished()){
-            return true;
-        } else {
-            return false;
+        if (combinedSensor.pin != 0){
+            if (combinedSensor.lightBlinking()){
+                return true;
+            } 
+            else{
+                return false;
+            }
+        }
+        else {
+            if (turnedOnSensor.lightOn() && finishedSensor.lightOn()){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
     }
-
-    void wasEmptied(){
-        sensor.reset();
-    }
-
 };

@@ -80,7 +80,6 @@ class VibrationSensor {
                 // ...wrap around to the beginning:
                 readIndex = 0;
             }
-            
         }
         
         int countHighs(){
@@ -102,14 +101,14 @@ class VibrationSensor {
         }
 
 
-        //? needed anylonger?
-        void falseAlarmCheck(){
-            // reset timer
-            if (this->average < belowAverageReset){
-                falseAlarmTimer.reset();
-                falseAlarmTimer.start();
-            }
-        }
+        // //? still needed?
+        // void falseAlarmCheck(){
+        //     // reset timer
+        //     if (this->average < belowAverageReset){
+        //         falseAlarmTimer.reset();
+        //         falseAlarmTimer.start();
+        //     }
+        // }
 
         int returnsIsRunning(){
             if (countHighs() >= runningThreshold){

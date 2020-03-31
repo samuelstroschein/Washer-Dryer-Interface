@@ -9,21 +9,16 @@ const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
 // Pins of vibration sensor of appliances
-const int washerSensorPin = 5;
-const int dryerSensorPin = 14;
-const int pirPin = 0;
+const int washerOnSensorPin = 14;
+const int washerFinishedSensorPin = 4;
+const int dryerCombinedSensorPin = 5; 
 
 // Appliances
-Appliance washer(washerSensorPin);
-Appliance dryer(dryerSensorPin);
-
-
-// PIR Sensor to detect emptying of appliances
-PirSensor pirSensor(pirPin);
+Appliance washer(washerOnSensorPin, washerFinishedSensorPin);
+Appliance dryer(dryerCombinedSensorPin);
 
 // query which contains the BOOLEAN values which light should be on
 String dataString = "";
-
 
 
 // --------------- definition of methods(functions) ------------------------
@@ -43,7 +38,6 @@ void appendDataString(Appliance appliance){
     dataString += "0";
   }
 }
-
 
 
 // ---------------------- START OF PROGRAM -----------------------
@@ -87,9 +81,9 @@ void loop() {
   // [WasherIsRunning, WasherIsFinished, DryerIsRunning, DryerIsFinished]
   dataString = "";
 
-  washer.sensor.measure();
-  dryer.sensor.measure();
-  pirSensor.measure();
+  washer.turnedOnSensor.measure();
+  washer.finishedSensor.measure();
+  dryer.combinedSensor.measure();
 
   // appends information about washer first e.g "01" (washer not running, washer finished)
   // then information about dryer e.g. "00" (dryer not running, dryer not finsihed)
@@ -97,7 +91,6 @@ void loop() {
   appendDataString(dryer);
 
   
-
   // create a URI for the request. Something like /data/?sensor_reading=
   //                               [WasherIsRunning, WasherIsFinished, DryerIsRunning, DryerIsFinished]
   String url = "/data/";
@@ -109,33 +102,22 @@ void loop() {
                 "Host: " + host + "\r\n" +
                 "Connection: close\r\n\r\n");
 
-  // To turn off the finished status
-  // double if statement because both can be finished at the same time
-  if (pirSensor.detectsPerson()){
-    if (washer.isFinished()){
-      washer.wasEmptied();
-    }
-    if (dryer.isFinished()){
-      dryer.wasEmptied();
-    }
-  }
 
-  // Debug print statements  
-    Serial.println("WASHER:");
-    Serial.println(washer.sensor.read());
-    Serial.println(washer.sensor.countHighs());
+  // Debug print statements (how does the debugger work for external hardware????)
+
+    Serial.println("Washer:");
+    Serial.println(washer.turnedOnSensor.lightOn());
+    Serial.println(washer.finishedSensor.lightOn());
     Serial.println(washer.isRunning());
     Serial.println(washer.isFinished());
-    Serial.println("DRYER:");
-    Serial.println(dryer.sensor.read());
-    Serial.println(dryer.sensor.countHighs());
+    Serial.println("Dryer");
+    Serial.println(dryer.combinedSensor.lightOn());
+    Serial.println(dryer.combinedSensor.lightBlinking());
     Serial.println(dryer.isRunning());
     Serial.println(dryer.isFinished());
-    Serial.println(url);
+    Serial.println(dataString);
     Serial.println("");
-    Serial.println(pirSensor.motionCounter);
-    Serial.println(pirSensor.detectsPerson());
-    Serial.println("");
-  
-  delay(1000);
+
+  delay(500);
 }
+
