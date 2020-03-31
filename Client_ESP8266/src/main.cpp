@@ -39,6 +39,19 @@ void appendDataString(Appliance appliance){
   }
 }
 
+void connectedSignIndicator(){
+  WiFiClient client;
+  const char * host = "192.168.4.1";
+  const int httpPort = 80;
+  String url = "/data/?sensor_reading=1111";
+  if (!client.connect(host, httpPort)) {
+    Serial.println("connection failed");
+  }
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+              "Host: " + host + "\r\n" +
+              "Connection: close\r\n\r\n");
+}
+
 
 // ---------------------- START OF PROGRAM -----------------------
 
@@ -63,6 +76,9 @@ void setup() {
       delay(500);
       Serial.print(".");
   }
+  // once client connects to server (sign) all lights turn on for 1 sec.
+  connectedSignIndicator();
+  delay(1000);
 }
 
 
@@ -72,6 +88,7 @@ void loop() {
   const char * host = "192.168.4.1";
   const int httpPort = 80;
 
+  client.setTimeout(1000);
   if (!client.connect(host, httpPort)) {
     Serial.println("connection failed");
   }
@@ -89,7 +106,6 @@ void loop() {
   // then information about dryer e.g. "00" (dryer not running, dryer not finsihed)
   appendDataString(washer);
   appendDataString(dryer);
-
   
   // create a URI for the request. Something like /data/?sensor_reading=
   //                               [WasherIsRunning, WasherIsFinished, DryerIsRunning, DryerIsFinished]
@@ -105,16 +121,25 @@ void loop() {
 
   // Debug print statements (how does the debugger work for external hardware????)
 
+    // Serial.println("Washer:");
+    // Serial.println(washer.turnedOnSensor.lightOn());
+    // Serial.println(washer.finishedSensor.lightOn());
+    // Serial.println(washer.isRunning());
+    // Serial.println(washer.isFinished());
+    // Serial.println("Dryer");
+    // Serial.println(dryer.combinedSensor.lightOn());
+    // Serial.println(dryer.combinedSensor.lightBlinking());
+    // Serial.println(dryer.isRunning());
+    // Serial.println(dryer.isFinished());
+    // Serial.println(dataString);
+    // Serial.println("");
+
     Serial.println("Washer:");
-    Serial.println(washer.turnedOnSensor.lightOn());
-    Serial.println(washer.finishedSensor.lightOn());
-    Serial.println(washer.isRunning());
-    Serial.println(washer.isFinished());
+    Serial.println(washer.turnedOnSensor.read());
+    Serial.println(washer.finishedSensor.read());
     Serial.println("Dryer");
-    Serial.println(dryer.combinedSensor.lightOn());
-    Serial.println(dryer.combinedSensor.lightBlinking());
-    Serial.println(dryer.isRunning());
-    Serial.println(dryer.isFinished());
+    Serial.println(dryer.combinedSensor.read());
+    
     Serial.println(dataString);
     Serial.println("");
 
