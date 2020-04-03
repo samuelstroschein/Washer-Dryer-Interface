@@ -44,7 +44,7 @@ The server receives the instructions which lights to turn on and off by the clie
 
 Since the server ESP is build into the sign itself but cannot be powered by 12V but the LED strips need 12V a small electronic circuit had to be developed. Again the disclaimer that I had no experience with electronics. I am sure there are things to improve. This is how the circuit looks like:
 
-![Project%20Washer%20Dryer%20Interface/WDI_Fritzing_bb.png](Project%20Washer%20Dryer%20Interface/WDI_Fritzing_bb.png)
+![Project%20Washer%20Dryer%20Interface/WDI_Fritzing_bb.png](images/1-electric_circuit.png)
 
 The circuit of the server ESP which is connected to the LED strips.
 
