@@ -58,7 +58,7 @@ The black box on the bottom right is a DC jack where the original LED strips pow
 
 **3D printed sign**
 
-![Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.25.05.png](Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.25.05.png)
+![Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.25.05.png](images/4-sign_cad_view.png)
 
 The 3D printed sign consists of 6 (+2 for the glasses) individual parts which are mostly put together by press fit and therefore easy to dismantle again. The dimensions are chosen to be printed by an Ender3 and that the LED strips are diffused by the plexiglass. The hardest part to get is likely the plexiglass. Alternatively, you could try to print a very thin layer with your 3D printer. If you live in Berlin, you can buy the plexiglass from ["Walter Weissig GmbH"](https://www.walterweissig.de/). It's a very old school company manufacturing everything around plexiglass in a typical Kreuzberger backyard since 1918. (These kind of manufacturing facilities are dying out, so if you are in Berlin, go there.)
 
@@ -72,7 +72,7 @@ The 3D printed sign consists of 6 (+2 for the glasses) individual parts which ar
 8. (Plexiglass + transparent foil with icons printed on them), dimensions are found in stl folder, icons in icons
 9. (Plexiglass + transparent foil with icons printed on them), dimensions are found in stl folder, icons in icons
 
-    ![Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.53.16.png](Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.53.16.png)
+    ![Project%20Washer%20Dryer%20Interface/Screenshot_2020-03-29_at_13.53.16.png](images/5-print_trick_cura.png)
 
     Print trick "under the buildplate". The orange line is the build plate.
 
@@ -84,4 +84,4 @@ I always forgot my laundry in the washing machine and dryer. The best solution t
 
 ## Process
 
-![Project%20Washer%20Dryer%20Interface/Screenshot_2020-04-01_at_10.32.43.png](Project%20Washer%20Dryer%20Interface/Screenshot_2020-04-01_at_10.32.43.png)
+![Project%20Washer%20Dryer%20Interface/Screenshot_2020-04-01_at_10.32.43.png](images/process-1-cad_history.png)
