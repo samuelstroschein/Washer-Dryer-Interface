@@ -86,3 +86,13 @@ I always forgot my laundry in the washing machine and dryer. The best solution t
 
 ![Project%20Washer%20Dryer%20Interface/Screenshot_2020-04-01_at_10.32.43.png](images/process-1-cad_history.png)
 ![sketches](images/process-2-sketches.png)
+![sketches](images/process-3-sketches.png)
+![sketches](images/process-4-sketches.png)
+![prototyping](images/process-5-early_prototype.png)
+![prototyping](images/process-6-first_glass_tests.png)
+![prototyping](images/process-7-glass_arrived.jpg)
+![prototyping](images/process-8-led_strip_layout.png)
+![prototyping](images/process-9-soldering.png)
+![prototyping](images/process-10-first_working_light.png)
+![prototyping](images/process-11-3d_print_finish.png)
+![prototyping](images/process-12-finished.png)
