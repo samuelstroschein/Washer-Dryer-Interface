@@ -52,9 +52,9 @@ The board is 70x50mm.
 
 The black box on the bottom right is a DC jack where the original LED strips power supply goes into. The original power supply gives out 12V which is represented by the yellow cable. Besides going directly to the LED strips, the 12V also go into a voltage regulator which lowers the voltage to 5V from which the ESP can be powered via the VIN pin (the cyan cable). I used a L78505CV voltage regulator. The four NPN transistors are used to turn on the corresponding colors on the LED strip. I used TIP120 transistors. The input pins from the transistors (most left) are connected to output pins of the ESP. In between each of this connections is 220 ohm resistor. The middle pin is the output for the LED strips. The most right pin is connected to the ground. 
 
-![Project%20Washer%20Dryer%20Interface/IMG_2143_JPEG.jpg](Project%20Washer%20Dryer%20Interface/IMG_2143_JPEG.jpg)
+![Project%20Washer%20Dryer%20Interface/IMG_2143_JPEG.jpg](images/2-electric_circuit.jpg)
 
-![Project%20Washer%20Dryer%20Interface/IMG_2144_JPEG.jpg](Project%20Washer%20Dryer%20Interface/IMG_2144_JPEG.jpg)
+![Project%20Washer%20Dryer%20Interface/IMG_2144_JPEG.jpg](images/3-electric_circuit.jpg)
 
 **3D printed sign**
 
