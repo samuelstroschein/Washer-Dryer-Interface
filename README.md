@@ -1,9 +1,6 @@
-# Project Washer Dryer Interface
-
-Creation Date: Mar 29, 2020 11:31 AM
-Tags: project
-
 # A washing machine/dryer status "illuminated sign"
+
+![animation](images/animation.gif)
 
 ## Summary:
 
