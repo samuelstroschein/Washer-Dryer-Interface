@@ -33,7 +33,7 @@ The client sends four boolean values to the server which tell the server which l
 
 The server receives the instructions which lights to turn on and off by the client. This information is processed and to corresponding LED strips and colors are turned on or off. 
 
-**Generally** the code is easy (and I think understandable). The only pitfall is that some logic is programmed within the classes itself. Especially the vibration sensor class. 
+**Generally** the code is easy (and I think understandable). The only pitfall are the amateurish communication over WiFi.
 
 ### Hardware
 
