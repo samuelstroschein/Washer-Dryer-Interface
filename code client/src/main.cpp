@@ -132,7 +132,14 @@ void loop() {
     }
     if (dryer.isFinished()){
       dryer.wasEmptied();
+      //! wasRunning bug bypass
+      dryer.wasRunning = false;
     }
+  }
+
+  //! statement implemented to bypass bug in wasRunnning variable in class appliance
+  if (dryer.isRunning()){
+    dryer.wasRunning = true;
   }
 
 
@@ -160,6 +167,8 @@ void loop() {
     Serial.println(pir.motionCounter);
     Serial.println(pir.detectsPerson());
     Serial.println(dataString);
+    Serial.println(dryer.wasRunning);
+    Serial.println(dryer.combinedSensor.read());
     Serial.println("");
     
   delay(500);

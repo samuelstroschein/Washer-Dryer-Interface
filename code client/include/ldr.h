@@ -7,7 +7,7 @@ class Ldr {
     private:
 
         // threshold how many times the led was on in count() function
-        static const int THRESHOLD_LED_ON = 28;
+        static const int THRESHOLD_LED_ON = 27;
         static const int THRESHOLD_LED_BLINKING = 10;
 
         // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds

@@ -3,13 +3,14 @@
 
 class Appliance{
     private:
-    bool wasRunning = false;
 
     
     public:
         Ldr combinedSensor; // is On when appliance is runnning, Blinks when appliance is finished
         Ldr turnedOnSensor;
         Ldr finishedSensor;
+        //! wasRunning is a bug. Value does not turn true, even if assigned.
+        int wasRunning;
 
 
         Appliance(int combinedSensorPin){
@@ -19,6 +20,7 @@ class Appliance{
             turnedOnSensor = Ldr(turnedOnSensorPin);
             finishedSensor = Ldr(finishedSensorPin);
         }
+    
 
     int isRunning(){
         // checks if combinedSensor is initialised
@@ -34,6 +36,7 @@ class Appliance{
         // if not use turnedOn and finished sensors
         else {
             if (turnedOnSensor.lightOn() && finishedSensor.lightOff()){
+                // this->wasRunning = true;
                 return true;
             }
             else{
