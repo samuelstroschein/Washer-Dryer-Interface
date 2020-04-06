@@ -1,8 +1,11 @@
 # include <Arduino.h>
 # include <ldr.h>
+# include <neotimer.h>
 
 class Appliance{
     private:
+    // 7.2e6 = 2 hours 
+    Neotimer finishedHeuristic = Neotimer(7.2e6);
 
     
     public:
@@ -22,6 +25,7 @@ class Appliance{
     int isRunning(){
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightOn()){
+                finishedHeuristic.start();
                 return true;
             } 
             else{
@@ -42,7 +46,11 @@ class Appliance{
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightBlinking()){
                 return true;
-            } 
+            }
+            else if (finishedHeuristic.done()){
+                finishedHeuristic.reset();
+                return true;
+            }
             else{
                 return false;
             }
