@@ -2,7 +2,6 @@
 # include <ESP8266WiFi.h>
 # include <appliance.h>
 # include <pirSensor.h>
-# include <neotimer.h>
 
 // Wifi server credentials
 const char *ssid = "WDI_Server2";
