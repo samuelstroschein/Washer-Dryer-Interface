@@ -1,11 +1,8 @@
 # include <Arduino.h>
 # include <ldr.h>
-# include <neotimer.h>
 
 class Appliance{
     private:
-    // 7.2e6 = 2 hours 
-    Neotimer finishedHeuristic = Neotimer(7.2e6);
     bool wasRunning = false;
 
     
@@ -51,7 +48,7 @@ class Appliance{
             if (combinedSensor.lightBlinking()){
                 return true;
             }
-            else if (combinedSensor.lightOff() && this->wasRunning == true){
+            else if (combinedSensor.lightOff() && wasRunning == true){
                 return true;
             }
             else{
