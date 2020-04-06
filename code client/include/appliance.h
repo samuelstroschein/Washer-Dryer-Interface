@@ -6,6 +6,7 @@ class Appliance{
     private:
     // 7.2e6 = 2 hours 
     Neotimer finishedHeuristic = Neotimer(7.2e6);
+    bool wasRunning = false;
 
     
     public:
@@ -23,15 +24,17 @@ class Appliance{
         }
 
     int isRunning(){
+        // checks if combinedSensor is initialised
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightOn()){
-                finishedHeuristic.start();
+                this->wasRunning = true;
                 return true;
             } 
             else{
                 return false;
             }
         }
+        // if not use turnedOn and finished sensors
         else {
             if (turnedOnSensor.lightOn() && finishedSensor.lightOff()){
                 return true;
@@ -43,18 +46,19 @@ class Appliance{
     }
 
     int isFinished(){
+        // checks if combinedSensor is initialised
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightBlinking()){
                 return true;
             }
-            else if (finishedHeuristic.done()){
-                finishedHeuristic.reset();
+            else if (combinedSensor.lightOff() && this->wasRunning == true){
                 return true;
             }
             else{
                 return false;
             }
         }
+        // if not use turnedOn and finished sensors
         else {
             if (finishedSensor.lightOn()){
                 return true;
@@ -63,5 +67,8 @@ class Appliance{
                 return false;
             }
         }
+    }
+    int wasEmptied(){
+        this->wasRunning = false;
     }
 };
