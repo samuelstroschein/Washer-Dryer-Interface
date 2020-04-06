@@ -11,7 +11,7 @@ An illuminated sign that indicates whether the dryer and/or washing machine is r
 ### What you need:
 
 1. 2x ESP8266
-2. (based on number of appliances)x Photo-resistors 
+2. (based on number of appliances)x Photo-resistors and if you have a complicated appliance a motion sensor.
 3. 1x LED Strip
 4. 3D printer
 5. 2x Glass panes optimised for LED's
@@ -78,6 +78,9 @@ The 3D printed sign consists of 6 (+2 for the glasses) individual parts which ar
 **Why did you build this?**
 
 I always forgot my laundry in the washing machine and dryer. The best solution to inform me when the dryer or washing machine is finished is when I walk by the "washing kitchen". (No annoying notifications!).
+
+**What's the motion sensor for?**  
+If you have a complicated appliance that does not allow for a heuristic when the appliance is emptied, like my dryer, you can use the motion sensor. If (appliance.isFinished && motionDetected) -> turn appliance.finishedLed off
 
 ## Process
 
