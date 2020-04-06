@@ -48,7 +48,7 @@ class Appliance{
             }
         }
         else {
-            if (turnedOnSensor.lightOn() && finishedSensor.lightOn()){
+            if (finishedSensor.lightOn()){
                 return true;
             }
             else{
