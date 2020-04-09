@@ -8,8 +8,8 @@ class PirSensor{
         int pin;
         // how many movements must be detected (to prevent false alarm)
         int THRESHOLD = 3;
-        //how much time between detected motions in order to reset motionCounter
-        Neotimer motionTimer = Neotimer(15000);
+        //how much time between detected motions get's reset
+        Neotimer motionTimer = Neotimer(6000);
 
     public:
 

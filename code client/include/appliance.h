@@ -9,6 +9,8 @@ class Appliance{
         Ldr combinedSensor; // is On when appliance is runnning, Blinks when appliance is finished
         Ldr turnedOnSensor;
         Ldr finishedSensor;
+        //! wasRunning is a bug. Value does not turn true, even if assigned.
+        int wasRunning;
 
 
         Appliance(int combinedSensorPin){
@@ -18,18 +20,23 @@ class Appliance{
             turnedOnSensor = Ldr(turnedOnSensorPin);
             finishedSensor = Ldr(finishedSensorPin);
         }
+    
 
     int isRunning(){
+        // checks if combinedSensor is initialised
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightOn()){
+                this->wasRunning = true;
                 return true;
             } 
             else{
                 return false;
             }
         }
+        // if not use turnedOn and finished sensors
         else {
             if (turnedOnSensor.lightOn() && finishedSensor.lightOff()){
+                // this->wasRunning = true;
                 return true;
             }
             else{
@@ -39,14 +46,19 @@ class Appliance{
     }
 
     int isFinished(){
+        // checks if combinedSensor is initialised
         if (combinedSensor.pin != 0){
             if (combinedSensor.lightBlinking()){
                 return true;
-            } 
+            }
+            else if (combinedSensor.lightOff() && wasRunning == true){
+                return true;
+            }
             else{
                 return false;
             }
         }
+        // if not use turnedOn and finished sensors
         else {
             if (finishedSensor.lightOn()){
                 return true;
@@ -55,5 +67,8 @@ class Appliance{
                 return false;
             }
         }
+    }
+    int wasEmptied(){
+        this->wasRunning = false;
     }
 };

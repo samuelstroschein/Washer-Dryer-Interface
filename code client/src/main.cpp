@@ -7,14 +7,20 @@
 const char *ssid = "WDI_Server2";
 const char *password = "macbook1";
 
-// Pins of vibration sensor of appliances
+// Pins of sensor 
 const int washerOnSensorPin = 14;
 const int washerFinishedSensorPin = 4;
 const int dryerCombinedSensorPin = 5; 
+const int pirSensorPin = 0;
+
+
 
 // Appliances
 Appliance washer(washerOnSensorPin, washerFinishedSensorPin);
 Appliance dryer(dryerCombinedSensorPin);
+
+// Motion (PIR) Sensor
+PirSensor pir(pirSensorPin);
 
 // query which contains the BOOLEAN values which light should be on
 String dataString = "";
@@ -100,6 +106,7 @@ void loop() {
   washer.turnedOnSensor.measure();
   washer.finishedSensor.measure();
   dryer.combinedSensor.measure();
+  pir.measure();
 
   // appends information about washer first e.g "01" (washer not running, washer finished)
   // then information about dryer e.g. "00" (dryer not running, dryer not finsihed)
@@ -116,6 +123,24 @@ void loop() {
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Connection: close\r\n\r\n");
+
+  // To turn off the finished status
+  // double if statement because both can be finished at the same time
+  if (pir.detectsPerson()){
+    if (washer.isFinished()){
+      washer.wasEmptied();
+    }
+    if (dryer.isFinished()){
+      dryer.wasEmptied();
+      //! wasRunning bug bypass
+      dryer.wasRunning = false;
+    }
+  }
+
+  //! statement implemented to bypass bug in wasRunnning variable in class appliance
+  if (dryer.isRunning()){
+    dryer.wasRunning = true;
+  }
 
 
   // Debug print statements (how does the debugger work for external hardware????)
@@ -138,10 +163,14 @@ void loop() {
     Serial.println(washer.finishedSensor.read());
     Serial.println("Dryer");
     Serial.println(dryer.combinedSensor.read());
-    
+    Serial.println("Pir:");
+    Serial.println(pir.motionCounter);
+    Serial.println(pir.detectsPerson());
     Serial.println(dataString);
+    Serial.println(dryer.wasRunning);
+    Serial.println(dryer.combinedSensor.read());
     Serial.println("");
-
+    
   delay(500);
 }
 
