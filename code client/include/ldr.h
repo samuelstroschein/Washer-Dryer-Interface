@@ -8,10 +8,10 @@ class Ldr {
 
         // threshold how many times the led was on in count() function
         static const int THRESHOLD_LED_ON = 27;
-        static const int THRESHOLD_LED_BLINKING = 10;
+        static const int THRESHOLD_LED_BLINKING = 3;
 
         // numReadings * delayMeasure = total time measured. numReadings = 60 * delayMeasure = 1000 = 60 seconds
-        static const int numReadings = 30;
+        static const int numReadings = 40;
         int readings[numReadings];      // the readings from the analog input
         int readIndex = 0;              // the index of the current reading
         int total = 0;                  // the running total

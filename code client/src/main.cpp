@@ -163,9 +163,10 @@ void loop() {
     Serial.println(washer.finishedSensor.read());
     Serial.println("Dryer");
     Serial.println(dryer.combinedSensor.read());
+    Serial.println(dryer.combinedSensor.count());
     Serial.println("Pir:");
     Serial.println(pir.motionCounter);
-    Serial.println(pir.detectsPerson());
+    // Serial.println(pir.detectsPerson());
     Serial.println(dataString);
     Serial.println(dryer.wasRunning);
     Serial.println(dryer.combinedSensor.read());
