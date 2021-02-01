@@ -19,7 +19,7 @@ An illuminated sign that indicates whether the dryer and/or washing machine is r
 
 ### Software
 
-Disclaimer: I started this project with 0.1 knowledge of programming. The code is bad, like really bad. 
+Disclaimer: I started this project with 0.1% of knowledge in programming: The code is bad, like really bad. 
 - The first versions did not make use of objects (duplicate code for washer and dryer). After learning about object oriented programming that was implemented (but not from scratch).
 - Did not know what HTTP requests or JSON files are. The communication is done via a HTTP Get request which send 4 boolean values (REST safe you know haha).  
 
@@ -39,7 +39,7 @@ The server receives the instructions which lights to turn on and off by the clie
 
 **Electronic Circuit** for the Server:
 
-Since the server ESP is build into the sign itself but cannot be powered by 12V but the LED strips need 12V a small electronic circuit had to be developed. Again the disclaimer that I had no experience with electronics. I am sure there are things to improve. This is how the circuit looks like:
+Since the server ESP is build into the sign itself, a 5V power supply was needed. Additionally, 12V power supply was also necessary in order to power the LED strips. Therefore, a small electronic circuit had to be developed. Again a disclaimer: I had no experience with electronics. I am sure there are things to improve. The following shows the circuit:
 
 ![Project%20Washer%20Dryer%20Interface/WDI_Fritzing_bb.png](images/1-electric_circuit.png)
 
